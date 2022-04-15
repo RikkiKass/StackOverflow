@@ -1,0 +1,66 @@
+﻿@model List<Question>
+@using StackOverflow.Data
+@foreach (Question question in Model)
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card card-body bg-light">
+                <h4>
+                    <a href="/questions/viewquestion?id=@question.Id">
+                        @question.Title
+                    </a>
+                </h4>
+                <div>
+                    <span>Tags:</span>
+                    @foreach (var qt in question.QuestionTags)
+                        {
+                            <span class="badge badge-primary">@qt.Tag.Name</span>
+                        }
+
+                </div>
+                <div style="margin-top: 10px;">
+                    @(question.Text.Length>200? question.Text.Substring(0, 200)+"...":question.Text)
+
+                </div>
+                @if (question.Likes == null)
+                {
+                    <span>Likes:0 </span>
+                }
+                else
+                {
+                    <span>Likes: @question.Likes.Count</span>
+                }
+
+                <br />
+
+                @if (question.Answers != null)
+                {
+                    <span> @question.Answers.Count answer(s)</span>
+                }
+                else
+                {
+                    <span> 0 answers</span>
+                }
+
+
+
+            </div>
+
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
+    <script>
+        $(() => {
+            $("#tags").tagsinput({
+                tagClass: 'badge badge-primary'
+            });
+        })
+    </script>
+}
+@section styles
+    {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" />
+}
